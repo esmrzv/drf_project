@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'users',
     'lms',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,11 @@ STATICFILES_DIRS = (BASE_DIR / 'static',)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+REST_FRAMEWORK = {
+       'DEFAULT_FILTER_BACKENDS': [
+           'django_filters.rest_framework.DjangoFilterBackend',
+           'rest_framework.filters.OrderingFilter',
+           'rest_framework.filters.SearchFilter',
+           'django_filters.rest_framework.DjangoFilterBackend',
+       ],
+   }
