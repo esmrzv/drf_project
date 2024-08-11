@@ -11,18 +11,20 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(BASE_DIR / '.env')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-jg(7qjp3us2ywa@n8f&#y4*eh24mal8d4je*)we_0h_76amtme'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", False) == "True"
 
 ALLOWED_HOSTS = []
 
@@ -77,12 +79,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'drf_project',
-        'USER': 'postgres',
-        'PASSWORD': '12345',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'ENGINE': os.getenv("ENGINE"),
+        'NAME': os.getenv("NAME"),
+        'USER': os.getenv("USER"),
+        'PASSWORD': os.getenv("PASSWORD"),
+        'HOST': os.getenv("HOST"),
+        'PORT': os.getenv("PORT")
     }
 }
 
@@ -107,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'UTC'
 
@@ -126,16 +128,15 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.user'
 
-
 STATICFILES_DIRS = (BASE_DIR / 'static',)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 REST_FRAMEWORK = {
-       'DEFAULT_FILTER_BACKENDS': [
-           'django_filters.rest_framework.DjangoFilterBackend',
-           'rest_framework.filters.OrderingFilter',
-           'rest_framework.filters.SearchFilter',
-           'django_filters.rest_framework.DjangoFilterBackend',
-       ],
-   }
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.OrderingFilter',
+        'rest_framework.filters.SearchFilter',
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ],
+}
