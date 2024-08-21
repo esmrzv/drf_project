@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -71,8 +70,8 @@ class SubscriptionAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, *args, **kwargs):
-        user = self.requests.user
-        course_id = self.reqests.data.get("course")
+        user = self.request.user
+        course_id = self.request.data.get("course")
         course_item = get_object_or_404(Course, pk=course_id)
 
         subs_item = Subscription.objects.all().filter(user=user).filter(course=course_item)
