@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import generics
 from lms.models import Course, Lesson, Subscription
+from lms.paginators import MyPagination
 from lms.serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer
 from users.permissions import IsModer, IsOwner
 
@@ -13,6 +14,7 @@ from users.permissions import IsModer, IsOwner
 class LmsViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    pagination_class = MyPagination
 
     def perform_create(self, serializer):
         course = serializer.save()
@@ -43,6 +45,7 @@ class LessonCreateAPIView(generics.CreateAPIView):
 class LessonListAPIView(generics.ListAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
+    pagination_class = MyPagination
 
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
