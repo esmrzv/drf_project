@@ -17,6 +17,7 @@ class LessonTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
 
     def test_lesson_retrieve(self):
+        """ Тестирование детали урока """
         url = reverse('lms:lesson-retrieve', args=[self.lesson.pk])
         response = self.client.get(url)
         data = response.json()
@@ -38,6 +39,7 @@ class LessonTestCase(APITestCase):
         )
 
     def test_lesson_update(self):
+        """ Тестирование редактирования урока """
         url = reverse('lms:lesson-update', args=[self.lesson.pk])
         data = {'name': 'Урок по джанго', 'description': 'Платный урок по джанго'}
         response = self.client.patch(url, data)
@@ -53,6 +55,7 @@ class LessonTestCase(APITestCase):
         )
 
     def test_lesson_create(self):
+        """ Тестирование создания урока """
         url = reverse('lms:lesson-create')
         data = {'name': 'аутентификация', 'description': 'права доступа', 'course': self.course.pk,
                 'owner': self.user.pk}
@@ -65,6 +68,7 @@ class LessonTestCase(APITestCase):
         )
 
     def test_lesson_delete(self):
+        """Тестирование удвления урока"""
         url = reverse('lms:lesson-delete', args=[self.lesson.pk])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -73,6 +77,7 @@ class LessonTestCase(APITestCase):
         )
 
     def test_lesson_list(self):
+        """Тетсирование списка уроков"""
         url = reverse('lms:lesson-list')
         response = self.client.get(url)
         data = response.json()
@@ -101,6 +106,7 @@ class LessonTestCase(APITestCase):
 
 
 class SubscriptionTestCase(APITestCase):
+    """"Тестирование пописки на урок"""
     def setUp(self):
         self.user = User.objects.create(last_name='adamasov', first_name='adam', email='test1@test.ru', phone='89066594545',
                                         city='kair')
