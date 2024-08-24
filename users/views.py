@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 
 from users.models import Payment, User
 from users.serializers import PaymentSerializer, UserSerializer
+from users.sevices import create_product, create_price, create_session
 
 
 class PaymentListAPIView(generics.ListAPIView):
@@ -15,6 +16,20 @@ class PaymentListAPIView(generics.ListAPIView):
     filterset_fields = ('course', 'lesson', 'payment_method')
 
     ordering_fields = ('payment_date',)
+
+
+class PaymentCreateAPIView(generics.CreateAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+
+    def perform_create(self, serializer):
+        payment = serializer.save(user=self.request.user)
+        product_id = create_product(payment)
+        price = create_price(payment.amount, product_id)
+        session_id, link = create_session(price)
+        payment.session_id = session_id
+        payment.link = link
+        payment.save()
 
 
 class UserCreateAPIView(generics.CreateAPIView):
@@ -46,5 +61,3 @@ class UserUpdateAPIView(generics.UpdateAPIView):
 class UserDestroyAPIView(generics.DestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-
