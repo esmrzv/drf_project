@@ -7,6 +7,7 @@ from rest_framework import generics
 from lms.models import Course, Lesson, Subscription
 from lms.paginators import MyPagination
 from lms.serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer
+from lms.tasks import check_subscribe
 from users.permissions import IsModer, IsOwner
 
 
@@ -83,8 +84,8 @@ class SubscriptionAPIView(APIView):
         # Если подписки у пользователя на этот курс нет - создаем ее
         else:
             Subscription.objects.create(course=course_item, user=user)
+
             message = 'подписка добавлена'
+            check_subscribe.delay(user.email)
         # Возвращаем ответ в API
         return Response({"message": message})
-
-
