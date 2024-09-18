@@ -6,22 +6,26 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0002_payment'),
+        ("users", "0002_payment"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='payment',
-            options={'verbose_name': 'Платеж', 'verbose_name_plural': 'Платежи'},
+            name="payment",
+            options={"verbose_name": "Платеж", "verbose_name_plural": "Платежи"},
         ),
         migrations.AddField(
-            model_name='payment',
-            name='link',
-            field=models.URLField(blank=True, max_length=400, null=True, verbose_name='ссылка на оплату'),
+            model_name="payment",
+            name="link",
+            field=models.URLField(
+                blank=True, max_length=400, null=True, verbose_name="ссылка на оплату"
+            ),
         ),
         migrations.AddField(
-            model_name='payment',
-            name='session_id',
-            field=models.CharField(blank=True, max_length=255, null=True, verbose_name='id сессии'),
+            model_name="payment",
+            name="session_id",
+            field=models.CharField(
+                blank=True, max_length=255, null=True, verbose_name="id сессии"
+            ),
         ),
     ]

@@ -22,11 +22,11 @@ class LmsViewSet(ModelViewSet):
         course.save()
 
     def get_permissions(self):
-        if self.action == 'create':
+        if self.action == "create":
             self.permission_classes = (~IsModer,)
-        elif self.action in ['retrieve', 'update']:
+        elif self.action in ["retrieve", "update"]:
             self.permission_classes = [IsModer | IsOwner]
-        elif self.action == 'destroy':
+        elif self.action == "destroy":
             self.permission_classes = [IsOwner | ~IsModer]
         return super().get_permissions()
 
@@ -34,7 +34,10 @@ class LmsViewSet(ModelViewSet):
 class LessonCreateAPIView(generics.CreateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
-    permission_classes = (IsAuthenticated, ~IsModer,)
+    permission_classes = (
+        IsAuthenticated,
+        ~IsModer,
+    )
 
     def perform_create(self, serializer):
         lesson = serializer.save()
@@ -75,17 +78,19 @@ class SubscriptionAPIView(APIView):
         course_id = self.request.data.get("course")
         course_item = get_object_or_404(Course, pk=course_id)
 
-        subs_item = Subscription.objects.all().filter(user=user).filter(course=course_item)
+        subs_item = (
+            Subscription.objects.all().filter(user=user).filter(course=course_item)
+        )
 
         # Если подписка у пользователя на этот курс есть - удаляем ее
         if subs_item.exists():
             subs_item.delete()
-            message = 'подписка удалена'
+            message = "подписка удалена"
         # Если подписки у пользователя на этот курс нет - создаем ее
         else:
             Subscription.objects.create(course=course_item, user=user)
 
-            message = 'подписка добавлена'
+            message = "подписка добавлена"
             check_subscribe.delay(user.email)
         # Возвращаем ответ в API
         return Response({"message": message})

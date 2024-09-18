@@ -6,5 +6,8 @@ class LessonCustomValidator:
         self.field = field
 
     def __call__(self, value):
-        if not (value.startswith('https://youtube.com') or value.startswith('https://www.youtube.com')):
-            raise ValidationError('Запрещены сторонние ссылки, кроме YouTube.')
+        if not (
+            value.startswith("https://youtube.com")
+            or value.startswith("https://www.youtube.com")
+        ):
+            raise ValidationError("Запрещены сторонние ссылки, кроме YouTube.")
