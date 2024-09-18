@@ -5,9 +5,18 @@ from lms.models import Lesson, Course
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'owner', 'course',)
+    list_display = (
+        "name",
+        "description",
+        "owner",
+        "course",
+    )
 
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'owner',)
+    list_display = (
+        "name",
+        "description",
+        "owner",
+    )
